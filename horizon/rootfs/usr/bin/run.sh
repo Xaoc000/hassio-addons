@@ -88,67 +88,7 @@ main() {
   do
         compare $i $valuesToReplace[i] $warnings[i] $ADDON_CONFIG
   done
-  # LATITUDE
-  VALUE=$(hass.config.get "latitude")
-  if [[ -z "${VALUE}" || "${VALUE}" == "null" ]]; then VALUE="0"; hass.log.warning "Using default latitude: ${VALUE}"; fi
-  ADDON_CONFIG="${ADDON_CONFIG}"',"latitude":'"${VALUE}"
-  # LONGITUDE
-  VALUE=$(hass.config.get "longitude")
-  if [[ -z "${VALUE}" || "${VALUE}" == "null" ]]; then VALUE="0"; hass.log.warning "Using default longitude: ${VALUE}"; fi
-  ADDON_CONFIG="${ADDON_CONFIG}"',"longitude":'"${VALUE}"
-  # ELEVATION
-  VALUE=$(hass.config.get "elevation")
-  if [[ -z "${VALUE}" || "${VALUE}" == "null" ]]; then VALUE="0"; hass.log.warning "Using default elevation: ${VALUE}"; fi
-  ADDON_CONFIG="${ADDON_CONFIG}"',"elevation":'"${VALUE}"
-  # UNIT SYSTEM
-  VALUE=$(hass.config.get "unit_system")
-  if [[ -z "${VALUE}" || "${VALUE}" == "null" ]]; then VALUE="imperial"; hass.log.warning "Using default unit_system: ${VALUE}"; fi
-  ADDON_CONFIG="${ADDON_CONFIG}"',"unit_system":"'"${VALUE}"'"'
-  # REFRESH
-  VALUE=$(hass.config.get "refresh")
-  if [[ -z "${VALUE}" || "${VALUE}" == "null" ]]; then VALUE="900"; hass.log.warning "Using default refresh: ${VALUE}"; fi
-  ADDON_CONFIG="${ADDON_CONFIG}"',"refresh":'"${VALUE}"
 
-  ## HORIZON
-  VALUE=$(hass.config.get "horizon.org")
-  if [[ -z "${VALUE}" || "${VALUE}" == "null" ]]; then hass.log.fatal "No horizon organization"; hass.die; fi
-  ADDON_CONFIG="${ADDON_CONFIG}"',"horizon":{"org":"'"${VALUE}"'"'
-  # APIKEY
-  VALUE=$(hass.config.get "horizon.apikey")
-  if [[ -z "${VALUE}" || "${VALUE}" == "null" ]]; then hass.log.fatal "No horizon apikey"; hass.die; fi
-  ADDON_CONFIG="${ADDON_CONFIG}"',"apikey":"'"${VALUE}"'"'
-  # URL
-  VALUE=$(hass.config.get "horizon.url")
-  if [[ -z "${VALUE}" || "${VALUE}" == "null" ]]; then hass.log.fatal "No horizon url"; hass.die; fi
-  ADDON_CONFIG="${ADDON_CONFIG}"',"url":"'"${VALUE}"'"'
-  # DEVICE
-  VALUE=$(hass.config.get "horizon.device")
-  if [[ -z "${VALUE}" || "${VALUE}" == "null" ]]; then hass.log.fatal "No horizon device"; hass.die; fi
-  ADDON_CONFIG="${ADDON_CONFIG}"',"device":"'"${VALUE}"'"'
-  # CONFIG
-  VALUE=$(hass.config.get "horizon.config")
-  if [[ -z "${VALUE}" || "${VALUE}" == "null" ]]; then hass.log.warning "No horizon configuration"; fi
-  ADDON_CONFIG="${ADDON_CONFIG}"',"config":"'"${VALUE}"'"'
-  ## DONE w/ HORIZON
-  ADDON_CONFIG="${ADDON_CONFIG}"'}'
-
-  # HOST
-  VALUE=$(hass.config.get "mqtt.host")
-  if [[ -z "${VALUE}" || "${VALUE}" == "null" ]]; then VALUE="core-mosquitto"; hass.log.warning "Using default MQTT host: ${VALUE}"; fi
-  ADDON_CONFIG="${ADDON_CONFIG}"',"mqtt":{"host":"'"${VALUE}"'"'
-  # PORT
-  VALUE=$(hass.config.get "mqtt.port")
-  if [[ -z "${VALUE}" || "${VALUE}" == "null" ]]; then VALUE="1883"; hass.log.warning "Using default MQTT port: ${VALUE}"; fi
-  ADDON_CONFIG="${ADDON_CONFIG}"',"port":'"${VALUE}"
-  # USERNAME
-  VALUE=$(hass.config.get "mqtt.username")
-  if [[ -z "${VALUE}" || "${VALUE}" == "null" ]]; then VALUE=""; hass.log.warning "Using default MQTT username: ${VALUE}"; fi
-  ADDON_CONFIG="${ADDON_CONFIG}"',"username":"'"${VALUE}"'"'
-  # PASSWORD
-  VALUE=$(hass.config.get "mqtt.password")
-  if [[ -z "${VALUE}" || "${VALUE}" == "null" ]]; then VALUE=""; hass.log.warning "Using default MQTT password: ${VALUE}"; fi
-  ADDON_CONFIG="${ADDON_CONFIG}"',"password":"'"${VALUE}"'"'
-  ## DONE w/ MQTT
   ADDON_CONFIG="${ADDON_CONFIG}"'}'
 
   ## DONE w/ ADDON_CONFIG
