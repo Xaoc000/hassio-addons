@@ -1,7 +1,7 @@
 {
   "name": "Motion",
   "url": "https://github.com/dcmartin/hassio-addons",
-  "version": "0.4.26",
+  "version": "0.4.27",
   "slug": "motion",
   "description": "Motion addon from LINUX package https://motion-project.github.io/",
   "startup": "before",
@@ -133,7 +133,7 @@
         "fov": "int?",
         "fps": "int?",
         "userpass": "str?",
-        "keepalive": "str?",
+        "keepalive": "match(^(on|off|force)$)?",
         "port": "port?",
         "quality": "int?",
         "width": "int?",
@@ -181,7 +181,7 @@
     "lightswitch": "int?",
     "netcam_url": "str?",
     "netcam_userpass": "str?",
-    "netcam_keepalive": "str?",
+    "netcam_keepalive": "match(^(on|off|force)$)?",
     "watson": {
       "url": "str?",
       "apikey": "str?",
