@@ -14,6 +14,43 @@ HORIZON_CONFIG_DB="hzn-config"
 HORIZON_SHARE_DIR="/share/horizon"
 
 # ==============================================================================
+# SUPPORTING FUNCTIONS
+# ------------------------------------------------------------------------------
+
+compare()
+{
+    notCritical=0
+    valueToCheck=$1;
+    failValue=$2;
+    warning=$3
+    ADDON_CONFIG=$6;
+
+    if [ "$failValue" = "default" ];
+    then
+        failValue=0
+    else
+        if [ "$failValue" = "critical" ]
+        then
+            notCritical=1
+            failValue=hass.die
+        fi
+    fi
+
+    value=hass.config.get "$valueToCheck"
+    if [[ -z "${value}" || "${value}" == "null" ]];
+    then
+        if [[ $notCritical ]]
+        then
+            hass.log.warning $warning
+        else
+            hass.log.fatal $warning hass.die;
+        fi;
+    fi
+    ConfigToAddTo=$( echo ${value/\horizon\./} )
+    ADDON_CONFIG="${ADDON_CONFIG}","${ConfigToAddTo}"':'"${value}"
+}
+
+# ==============================================================================
 # RUN LOGIC
 # ------------------------------------------------------------------------------
 main() {
@@ -37,6 +74,20 @@ main() {
   # set timezone
   cp /usr/share/zoneinfo/${VALUE} /etc/localtime
 
+  valuesToCheck=[[ "latitude" "longitude" "elevation" "unit_system" "refresh" \
+                  "horizon.org" "horizon.apikey" "horizon.url" "horizon.device" "horizon.config" \
+                  "mqtt.host" "mqtt.port" "mqtt.username" "mqtt.password" ]];
+  valuesToReplace=[[ "default" "default" "default" "imperial" "900" \
+                    "critical" "critical" "critical" "critical" "null" \
+                    "core-mosquitto" "1883" "null" "null" ]];
+  warnings=[[ "Using default latitude: " "Using default longitude: " "Using default elevation: " "Using default unit_system: " "Using default refresh: " \
+              "No horizon organization" "No horizon apikey" "No horizon url" "No horizon device" "No horizon configuration" \
+              "Using default MQTT host: " "Using default MQTT port: " "Using default MQTT username: " "Using default MQTT password: " ]];
+
+  for i in "${valuesToCheck[@]}"d
+  do
+        compare $i $valuesToReplace[i] $warnings[i] $ADDON_CONFIG
+  done
   # LATITUDE
   VALUE=$(hass.config.get "latitude")
   if [[ -z "${VALUE}" || "${VALUE}" == "null" ]]; then VALUE="0"; hass.log.warning "Using default latitude: ${VALUE}"; fi
